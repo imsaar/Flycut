@@ -128,6 +128,23 @@
 	}
 }
 
+-(NSArray *) searchClippingContaining:(NSString *)searchString
+{
+    NSMutableArray *matchingClips = [[NSMutableArray alloc] init];
+    searchString = [NSString stringWithFormat:@"*%@*", searchString];
+    NSPredicate *stringPredicate = [NSPredicate predicateWithFormat:@"self LIKE %@", searchString];
+    
+    for(JumpcutClipping *clip in jcList) {
+        if ([stringPredicate evaluateWithObject:[clip contents]]) {
+            [matchingClips addObject:[clip contents]];
+        }
+    }
+
+    NSArray *searchResults = [NSArray arrayWithArray:matchingClips];
+    [matchingClips release];
+    return searchResults;
+}
+
 -(NSString *) clippingDisplayStringAtPosition:(int)index
 {
     return [[jcList objectAtIndex:index] displayString];

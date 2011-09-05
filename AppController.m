@@ -20,6 +20,7 @@
 @implementation AppController
 @synthesize rememberTextField;
 @synthesize displayInMenuTextField;
+@synthesize searchString;
 
 - (id)init
 {
@@ -369,8 +370,16 @@
 					[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 				}
 				break;
-			case NSBackspaceCharacter: break;
-            case NSDeleteCharacter: break;
+			case NSBackspaceCharacter:
+            case NSDeleteCharacter:
+                NSLog(@"Backspace or Delete pressed");
+                if ( [searchString length] > 0 ) {
+                    searchString = [NSMutableString stringWithString:
+                                    [searchString substringToIndex:[searchString length] - 1]
+                                    ];
+                }
+                [self updateSearchResultsInBezel];
+                break;
             case NSDeleteFunctionKey: break;
 			case 0x30: case 0x31: case 0x32: case 0x33: case 0x34: 				// Numeral 
 			case 0x35: case 0x36: case 0x37: case 0x38: case 0x39:
@@ -386,9 +395,23 @@
             default: // It's not a navigation/application-defined thing, so let's figure out what to do with it.
 				NSLog(@"PRESSED %d", pressed);
 				NSLog(@"CODE %ld", [mainRecorder keyCombo].code);
+                [searchString appendString:[NSString stringWithCharacters:&pressed length:1]];
+                [self updateSearchResultsInBezel];
 				break;
 		}		
 	}
+}
+
+- (void) updateSearchResultsInBezel
+{
+    NSArray *clips = [clippingStore searchClippingContaining:searchString];
+    NSMutableString *resultsCat = [NSMutableString stringWithString:@""];
+    for(NSString *clip in clips) {
+        [resultsCat appendFormat:@"%@\n", clip];
+        [resultsCat appendString:@"------------------\n"];
+    }
+    [bezel setText:resultsCat];
+
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
@@ -399,7 +422,8 @@
 
 - (void) showBezel
 {
-	if ( [clippingStore jcListCount] > 0 && [clippingStore jcListCount] > stackPosition ) {
+    searchString = [[NSMutableString alloc] init];
+    if ( [clippingStore jcListCount] > 0 && [clippingStore jcListCount] > stackPosition ) {
 					[bezel setCharString:[NSString stringWithFormat:@"%d of %d", stackPosition + 1, [clippingStore jcListCount]]];
 		[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 	} 
@@ -413,6 +437,8 @@
 	[bezel orderOut:nil];
 	[bezel setCharString:@""];
 	isBezelDisplayed = NO;
+    [searchString release];
+    searchString = nil;
 }
 
 -(void)hideApp

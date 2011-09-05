@@ -68,6 +68,7 @@
 -(NSString *) clippingTypeAtPosition:(int)index;
 -(NSArray *) previousContents:(int)howMany;
 -(NSArray *) previousDisplayStrings:(int)howMany;
+-(NSArray *) searchClippingContaining:(NSString *)searchString;
 
 // Add a clipping
 -(void) addClipping:(NSString *)clipping ofType:(NSString *)type;

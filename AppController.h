@@ -53,6 +53,7 @@
 	BOOL issuedRememberResizeWarning;
     NSTextField *rememberTextField;
     NSTextField *displayInMenuTextField;
+    NSMutableString *searchString;
 }
 
 // Basic functionality
@@ -67,6 +68,8 @@
 -(IBAction)clearClippingList:(id)sender;
 @property (assign) IBOutlet NSTextField *rememberTextField;
 @property (assign) IBOutlet NSTextField *displayInMenuTextField;
+@property (nonatomic, retain) NSMutableString *searchString;
+- (void) updateSearchResultsInBezel;
 
 // Stack related
 -(BOOL) isValidClippingNumber:(NSNumber *)number;
