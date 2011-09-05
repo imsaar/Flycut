@@ -51,6 +51,8 @@
 	NSDictionary *standardPreferences;
     int jcDisplayNum;
 	BOOL issuedRememberResizeWarning;
+    NSTextField *rememberTextField;
+    NSTextField *displayInMenuTextField;
 }
 
 // Basic functionality
@@ -63,6 +65,8 @@
 -(void) stackUp;
 -(void) stackDown;
 -(IBAction)clearClippingList:(id)sender;
+@property (assign) IBOutlet NSTextField *rememberTextField;
+@property (assign) IBOutlet NSTextField *displayInMenuTextField;
 
 // Stack related
 -(BOOL) isValidClippingNumber:(NSNumber *)number;

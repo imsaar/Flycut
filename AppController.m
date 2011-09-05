@@ -18,6 +18,8 @@
 #define _DISPLENGTH 40
 
 @implementation AppController
+@synthesize rememberTextField;
+@synthesize displayInMenuTextField;
 
 - (id)init
 {
@@ -172,7 +174,7 @@
 -(IBAction) setRememberNumPref:(id)sender
 {
 	int choice;
-	int newRemember = [sender intValue];
+	int newRemember = [rememberTextField intValue];
 	if ( newRemember < [clippingStore jcListCount] &&
 		 ! issuedRememberResizeWarning &&
 		 ! [[NSUserDefaults standardUserDefaults] boolForKey:@"stifleRememberResizeWarning"]
