@@ -373,10 +373,13 @@
 			case NSBackspaceCharacter:
             case NSDeleteCharacter:
                 NSLog(@"Backspace or Delete pressed");
-                if ( [searchString length] > 0 ) {
-                    searchString = [NSMutableString stringWithString:
+                // There should be a better way to do this but this works for now
+                if ( [searchString length] > 1 ) {
+                    searchString = [[NSMutableString alloc] initWithString:
                                     [searchString substringToIndex:[searchString length] - 1]
                                     ];
+                } else if ( [searchString length] == 1 ) {
+                    searchString = [[NSMutableString alloc] init];
                 }
                 [self updateSearchResultsInBezel];
                 break;
